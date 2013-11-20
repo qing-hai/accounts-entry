@@ -1,6 +1,9 @@
 Template.entrySignIn.helpers
-  emailOnly: ->
-    Accounts.ui._options.passwordSignupFields is 'EMAIL_ONLY'
+  emailInputType: ->
+    if Accounts.ui._options.passwordSignupFields is 'EMAIL_ONLY'
+      'email'
+    else
+      'string'
 
   emailPlaceholder: ->
     fields = Accounts.ui._options.passwordSignupFields
@@ -14,7 +17,7 @@ Template.entrySignIn.helpers
     return 'Email'
 
   logo: ->
-    Meteor.call('entryLogo')
+    AccountsEntry.settings.logo
 
 Template.entrySignIn.events
   'submit #signIn': (event) ->
@@ -29,5 +32,5 @@ Template.entrySignIn.events
       if error
         Session.set('entryError', error.reason)
       else
-        Router.go Session.get('entrySettings').dashboardRoute
+        Router.go AccountsEntry.settings.dashboardRoute
     )
