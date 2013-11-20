@@ -69,8 +69,13 @@ Template.entrySignUp.events
         undefined
 
     email = t.find('input[type="email"]').value
-    password = t.find('input[type="password"]').value
-
+    password = t.find('input[name="password"]').value
+    passwordConfirm = t.find('input[name="passwordConfirm"]').value
+	
+    if password != passwordConfirm
+      Session.set('entryError', 'Password doesn\'t match confirmation')
+      return
+	
     fields = Accounts.ui._options.passwordSignupFields
 
     trimInput = (val)->
@@ -119,7 +124,8 @@ Template.entrySignUp.events
     if Session.get('entrySettings').showSignupCode && signupCode.length is 0
       Session.set('entryError', 'Signup code is required')
       return
-
+    
+    $('#signUp .btn').button('loading')
     Meteor.call('entryValidateSignupCode', signupCode, (err, valid) ->
       if err
         console.log err
@@ -140,9 +146,11 @@ Template.entrySignUp.events
             Meteor.loginWithPassword(username, password)
 
           Router.go(Session.get('entrySettings').dashboardRoute)
+          $('#signUp .btn').button('reset')
         )
       else
-        Session.set('entryError', 'Signup code is incorrect')
+        Session.set('entryError', 'Signup code is incorrect.')
+        $('#signUp .btn').button('reset')
         return
     )
 
