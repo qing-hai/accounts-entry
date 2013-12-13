@@ -116,6 +116,7 @@ Template.entrySignUp.events
         Meteor.call('accountsCreateUser', username, email, password, (err, data) ->
           if err
             Session.set('entryError', err.reason)
+            $('#signUp .btn').button 'reset'
             return
 
 
