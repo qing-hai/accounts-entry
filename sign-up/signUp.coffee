@@ -116,9 +116,16 @@ Template.entrySignUp.events
         Meteor.call('accountsCreateUser', username, email, password, (err, data) ->
           if err
             Session.set('entryError', err.reason)
-            $('#signUp .btn').button 'reset'
+            $('#signUp .btn').button('reset')
             return
-		  
+
+          msg='Your account has been created. An activation email has been sent to your email address '+ email + '  <br/> NOTE: if you do not see your activation email, look in your spam/junk mailbox.'
+          if app && app.client
+             app.client.alert(msg,'success')
+          else
+             alert(msg)
+
+          $('#signUp')[0].reset()
           $('#signUp .btn').button('reset')
         )
       else
