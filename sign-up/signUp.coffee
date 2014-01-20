@@ -56,7 +56,7 @@ Template.entrySignUp.events
     passwordConfirm = t.find('input[name="passwordConfirm"]').value
 	
     if password != passwordConfirm
-      Session.set('entryError', 'Password doesn\'t match confirmation')
+      Session.set('entryError', 'Password does not match the confirm password.')
       return
 	
     fields = Accounts.ui._options.passwordSignupFields
