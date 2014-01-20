@@ -68,7 +68,7 @@ Template.entrySignUp.events
       errMsg = []
       msg = false
       if password.length < 7
-        errMsg.push "7 character minimum password."
+        errMsg.push "Minimum password length 7 characters."
       if password.search(/[a-z]/i) < 0
         errMsg.push "Password requires 1 letter."
       if password.search(/[0-9]/) < 0

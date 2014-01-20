@@ -19,5 +19,9 @@ Template.entryForgotPassword.events
         if error
           Session.set('entryError', error.reason)
         else
-          Router.go AccountsEntry.settings.dashboardRoute
+          msg='The reset password link email has been sent to your email address '+ email + '  <br/> NOTE: if you do not see the email, look in your spam/junk mailbox.'
+          if app && app.client
+             app.client.alert(msg,'success')
+          else
+             alert(msg)          
     )
