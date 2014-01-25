@@ -109,6 +109,7 @@ Template.entrySignUp.events
       return
 
     $('#signUp .btn').button('loading')
+    Session.set('entryError', undefined)
     Meteor.call('entryValidateSignupCode', signupCode, (err, valid) ->
       if err
         console.log err
@@ -119,12 +120,18 @@ Template.entrySignUp.events
             $('#signUp .btn').button('reset')
             return
 
-          msg='Your account has been created. An activation email has been sent to your email address '+ email + '  <br/> NOTE: if you do not see your activation email, look in your spam/junk mailbox.'
-          if app && app.client
-             app.client.alert(msg,'success')
-          else
-             alert(msg)
+          Meteor.call('sendVerificationEmail', data, (err) ->
+            if err
+              Session.set('entryError', err.reason)
+              return
 
+            msg='Your account has been created. An activation email has been sent to your email address '+ email + '  <br/> NOTE: if you do not see your activation email, look in your spam/junk mailbox.'
+
+            if app && app.client
+               app.client.alert(msg,'success')
+            else
+               alert(msg)
+          )
           $('#signUp')[0].reset()
           $('#signUp .btn').button('reset')
         )
