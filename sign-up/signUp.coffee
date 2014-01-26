@@ -122,6 +122,7 @@ Template.entrySignUp.events
 
           Meteor.call('sendVerificationEmail', data, (err) ->
             if err
+              $('#signUp .btn').button('reset')
               Session.set('entryError', err.reason)
               return
 
@@ -131,9 +132,10 @@ Template.entrySignUp.events
                app.client.alert(msg,'success')
             else
                alert(msg)
+
+            $('#signUp')[0].reset()
+            $('#signUp .btn').button('reset')
           )
-          $('#signUp')[0].reset()
-          $('#signUp .btn').button('reset')
         )
       else
         Session.set('entryError', 'Signup code is incorrect')
