@@ -31,5 +31,5 @@ Template.entrySignIn.events
       if error
         Session.set('entryError', error.reason)
       else
-        Router.go AccountsEntry.settings.dashboardRoute
+        Router.go AccountsEntry.settings.home
     )
