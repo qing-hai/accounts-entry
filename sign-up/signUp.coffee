@@ -151,3 +151,5 @@ Template.entrySignUp.events
       app.client.loginAsDemo()
     else
       $('#signUp .btn').button('reset')
+
+    return false

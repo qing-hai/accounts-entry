@@ -43,3 +43,5 @@ Template.entrySignIn.events
       app.client.loginAsDemo()
     else
       $('#signIn .btn').button('reset')
+
+    return false
