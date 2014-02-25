@@ -34,3 +34,12 @@ Template.entrySignIn.events
       else
         Router.go AccountsEntry.settings.dashboardRoute
     )
+
+  'click #tryDemo': (event) ->
+    event.preventDefault()
+    $('#signIn .btn').button('loading')
+    
+    if app
+      app.client.loginAsDemo()
+    else
+      $('#signIn .btn').button('reset')

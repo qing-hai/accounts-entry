@@ -143,3 +143,11 @@ Template.entrySignUp.events
         return
     )
 
+  'click #tryDemo': (event) ->
+    event.preventDefault()
+    $('#signUp .btn').button('loading')
+    
+    if app
+      app.client.loginAsDemo()
+    else
+      $('#signUp .btn').button('reset')
