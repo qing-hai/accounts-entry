@@ -69,7 +69,7 @@ Template.entrySignUp.events
 
     password = t.find('input[type="password"]').value
     passwordConfirm = t.find('input[name="passwordConfirm"]').value
-	
+
     if password != passwordConfirm
       Session.set('entryError', 'Password does not match the confirm password.')
       return
@@ -153,12 +153,12 @@ Template.entrySignUp.events
             $('#signUp')[0].reset()
             $('#signUp .btn').button('reset')
           )
-        )
+
       else
         Session.set('entryError', 'Signup code is incorrect')
         $('#signUp .btn').button('reset')
         return
-    )
+
 
   'click #tryDemo': (event) ->
     event.preventDefault()
