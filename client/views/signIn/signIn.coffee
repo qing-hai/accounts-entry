@@ -1,20 +1,22 @@
 Template.entrySignIn.helpers
   emailInputType: ->
-    if Accounts.ui._options.passwordSignupFields is 'EMAIL_ONLY'
+    if AccountsEntry.settings.passwordSignupFields is 'EMAIL_ONLY'
       'email'
     else
       'string'
 
   emailPlaceholder: ->
-    fields = Accounts.ui._options.passwordSignupFields
+    fields = AccountsEntry.settings.passwordSignupFields
 
     if _.contains([
       'USERNAME_AND_EMAIL'
       'USERNAME_AND_OPTIONAL_EMAIL'
       ], fields)
-      return 'Username or email'
+      return i18n("usernameOrEmail")
+    else if fields == "USERNAME_ONLY"
+      return i18n("username")
 
-    return 'Email'
+    return i18n("email")
 
   logo: ->
     AccountsEntry.settings.logo
@@ -23,14 +25,22 @@ Template.entrySignIn.events
   'submit #signIn': (event) ->
     event.preventDefault()
     $('#signIn .btn').button('loading')
-    Session.set('email', $('input[name="email"]').val())
+    email = $('input[name="email"]').val()
+    if (AccountsEntry.isStringEmail(email) and AccountsEntry.settings.emailToLower) or
+     (not AccountsEntry.isStringEmail(email) and AccountsEntry.settings.usernameToLower)
+      email = email.toLowerCase()
+
+    Session.set('email', email)
     Session.set('password', $('input[name="password"]').val())
 
     Meteor.loginWithPassword(Session.get('email'), Session.get('password'), (error)->
       $('#signIn .btn').button('reset')
-	  
+      Session.set('password', undefined)
       if error
-        Session.set('entryError', error.reason)
+        T9NHelper.accountsError error
+      else if Session.get('fromWhere')
+        Router.go Session.get('fromWhere')
+        Session.set('fromWhere', undefined)
       else
         Router.go AccountsEntry.settings.dashboardRoute
     )

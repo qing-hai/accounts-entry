@@ -1,6 +1,6 @@
 Template.entrySignUp.helpers
   showEmail: ->
-    fields = Accounts.ui._options.passwordSignupFields
+    fields = AccountsEntry.settings.passwordSignupFields
 
     _.contains([
       'USERNAME_AND_EMAIL',
@@ -8,7 +8,7 @@ Template.entrySignUp.helpers
       'EMAIL_ONLY'], fields)
 
   showUsername: ->
-    fields = Accounts.ui._options.passwordSignupFields
+    fields = AccountsEntry.settings.passwordSignupFields
 
     _.contains([
       'USERNAME_AND_EMAIL',
@@ -35,15 +35,21 @@ Template.entrySignUp.helpers
     !AccountsEntry.settings.privacyUrl &&
     !AccountsEntry.settings.termsUrl
 
+  emailIsOptional: ->
+    fields = AccountsEntry.settings.passwordSignupFields
+
+    _.contains(['USERNAME_AND_OPTIONAL_EMAIL'], fields)
+
 Template.entrySignUp.events
   'submit #signUp': (event, t) ->
     event.preventDefault()
 
     username =
       if t.find('input[name="username"]')
-        t.find('input[name="username"]').value
+        t.find('input[name="username"]').value.toLowerCase()
       else
         undefined
+    if username and AccountsEntry.settings.usernameToLower then username = username.toLowerCase()
 
     signupCode =
       if t.find('input[name="signupCode"]')
@@ -51,28 +57,35 @@ Template.entrySignUp.events
       else
         undefined
 
-    email = t.find('input[type="email"]').value
-    password = t.find('input[name="password"]').value
+    trimInput = (val)->
+      val.replace /^\s*|\s*$/g, ""
+
+    email =
+      if t.find('input[type="email"]')
+        trimInput t.find('input[type="email"]').value
+      else
+        undefined
+    if AccountsEntry.settings.emailToLower and email then email = email.toLowerCase()
+
+    password = t.find('input[type="password"]').value
     passwordConfirm = t.find('input[name="passwordConfirm"]').value
 	
     if password != passwordConfirm
       Session.set('entryError', 'Password does not match the confirm password.')
       return
-	
-    fields = Accounts.ui._options.passwordSignupFields
+      
+    fields = AccountsEntry.settings.passwordSignupFields
 
-    trimInput = (val)->
-      val.replace /^\s*|\s*$/g, ""
 
     passwordErrors = do (password)->
       errMsg = []
       msg = false
       if password.length < 7
-        errMsg.push "Minimum password length 7 characters."
+        errMsg.push i18n("error.minChar")
       if password.search(/[a-z]/i) < 0
-        errMsg.push "Password requires 1 letter."
+        errMsg.push i18n("error.pwOneLetter")
       if password.search(/[0-9]/) < 0
-        errMsg.push "Password must have at least one digit."
+        errMsg.push i18n("error.pwOneDigit")
 
       if errMsg.length > 0
         msg = ""
@@ -86,8 +99,6 @@ Template.entrySignUp.events
 
     if passwordErrors then return
 
-    email = trimInput email
-
     emailRequired = _.contains([
       'USERNAME_AND_EMAIL',
       'EMAIL_ONLY'], fields)
@@ -96,27 +107,33 @@ Template.entrySignUp.events
       'USERNAME_AND_EMAIL',
       'USERNAME_ONLY'], fields)
 
-    if usernameRequired && email.length is 0
-      Session.set('entryError', 'Username is required')
+    if usernameRequired && username.length is 0
+      Session.set('entryError', i18n("error.usernameRequired"))
+      return
+
+    if username && AccountsEntry.isStringEmail(username)
+      Session.set('entryError', i18n("error.usernameIsEmail"))
       return
 
     if emailRequired && email.length is 0
-      Session.set('entryError', 'Email is required')
+      Session.set('entryError', i18n("error.emailRequired"))
       return
 
     if AccountsEntry.settings.showSignupCode && signupCode.length is 0
-      Session.set('entryError', 'Signup code is required')
+      Session.set('entryError', i18n("error.signupCodeRequired"))
       return
 
-    $('#signUp .btn').button('loading')
-    Session.set('entryError', undefined)
-    Meteor.call('entryValidateSignupCode', signupCode, (err, valid) ->
-      if err
-        console.log err
+
+    Meteor.call 'entryValidateSignupCode', signupCode, (err, valid) ->
       if valid
-        Meteor.call('accountsCreateUser', username, email, password, (err, data) ->
+        newUserData =
+          username: username
+          email: email
+          password: password
+          profile: AccountsEntry.settings.defaultProfile || {}
+        Accounts.createUser newUserData, (err, data) ->
           if err
-            Session.set('entryError', err.reason)
+            T9NHelper.accountsError err
             $('#signUp .btn').button('reset')
             return
 
