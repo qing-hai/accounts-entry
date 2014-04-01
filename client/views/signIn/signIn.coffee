@@ -48,10 +48,4 @@ Template.entrySignIn.events
   'click #tryDemo': (event) ->
     event.preventDefault()
     $('#signIn .btn').button('loading')
-    
-    if app
-      app.client.loginAsDemo()
-    else
-      $('#signIn .btn').button('reset')
-
     return false
