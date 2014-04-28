@@ -138,8 +138,8 @@ Template.entrySignUp.events
             return
 
           Session.set('entryError', undefined)
-          msg='Your account has been created. An activation email has been sent to your email address '+ email + '  <br/> NOTE: if you do not see your activation email, look in your spam/junk mailbox.'
-
+          msg=_s.sprintf("Your account has been created. An activation email has been sent to your email address %s <br/> NOTE: if you do not see your activation email, look in your spam/junk mailbox. You can also try to <a class='verify_link' id='resendEmail' href='javascript:void(0)'>resend activation email</a>", email)
+          
           if app && app.client
              app.client.alert(msg,'success')
           else
