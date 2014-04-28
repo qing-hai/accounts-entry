@@ -6,7 +6,7 @@
   "version": "0.7.1",
   "git": "https://github.com/Differential/accounts-entry.git",
   "packages": {
-    "iron-router": "0.7.0",
+    "iron-router": "0.7.1",
     "just-i18n": {
     },
     "accounts-t9n": {
