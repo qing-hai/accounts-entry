@@ -43,4 +43,3 @@ Template.entrySignIn.events
   'click #tryDemo': (event) ->
     event.preventDefault()
     $('#signIn .btn').button('loading')
-    return false
