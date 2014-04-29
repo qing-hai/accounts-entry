@@ -124,6 +124,7 @@ Template.entrySignUp.events
       return
 
 
+    $('#signUp .btn').button('loading')
     Meteor.call 'entryValidateSignupCode', signupCode, (err, valid) ->
       if valid
         newUserData =
