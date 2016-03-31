@@ -1,9 +1,11 @@
 Package.describe({
-    summary: "Make signin and signout their own pages with routes."
+    name:"qinghai:accounts-entry",
+    summary: "Make signin and signout their own pages with routes.",
+    git:"https://github.com/qing-hai/accounts-entry.git#loadbooster_v0.5.0"
 });
 
 Package.on_use(function(api) {
-
+    
   // CLIENT
   api.use([
     'deps',
@@ -12,13 +14,12 @@ Package.on_use(function(api) {
     'underscore',
     'templating',
     'handlebars',
-    'spark',
     'session',
     'coffeescript',
     'less']
   , 'client');
 
-
+    
   api.add_files([
     'client/entry.coffee',
     'client/entry.less',
@@ -52,13 +53,14 @@ Package.on_use(function(api) {
     'coffeescript'
   ], 'server');
 
+
   api.add_files(['server/entry.coffee'], 'server');
 
   // CLIENT and SERVER
   api.imply('accounts-base', ['client', 'server']);
   api.export('AccountsEntry', ['client', 'server']);
-  api.use('iron-router', ['client', 'server']);
-  api.use('just-i18n', ['client']);
+  api.use('iron:iron-router', ['client', 'server']);
+  api.use('mrt:just-i18n', ['client']);
   api.add_files(['shared/router.coffee'], ['client', 'server']);
 
 });
