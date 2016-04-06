@@ -1,7 +1,7 @@
 Package.describe({
     name:"qinghai:accounts-entry",
     summary: "Make signin and signout their own pages with routes.",
-    version:"0.7.1_2",
+    version:"0.7.1_3",
     git:"https://github.com/qing-hai/accounts-entry.git#noteon"
 });
 
