@@ -1,11 +1,12 @@
 Package.describe({
     name:"qinghai:accounts-entry",
     summary: "Make signin and signout their own pages with routes.",
-    version:"0.7.1_3",
+    version:"0.7.1_8",
     git:"https://github.com/qing-hai/accounts-entry.git#noteon"
 });
 
 Package.on_use(function(api) {
+  api.versionsFrom('METEOR@0.9.4');
     
   // CLIENT
   api.use([
@@ -16,14 +17,13 @@ Package.on_use(function(api) {
     'templating@1.0.8',
     'handlebars@1.0.1',
     'session@1.0.3',
-    'coffeescript@1.0.4',
-    'less@2.5.6']
+    'coffeescript@1.0.4']
   , 'client');
 
     
   api.add_files([
     'client/entry.coffee',
-    'client/entry.less',
+    'client/entry.css',
     'client/helpers.coffee',
     'client/views/signIn/signIn.html',
     'client/views/signIn/signIn.coffee',
@@ -38,6 +38,7 @@ Package.on_use(function(api) {
     'client/views/error/error.html',
     'client/views/error/error.coffee',
     'client/views/accountButtons/accountButtons.html',
+    'client/views/accountButtons/_wrapLinks.html',
     'client/views/accountButtons/accountButtons.coffee',
     'client/i18n/english.coffee',
     'client/i18n/german.coffee',
@@ -61,7 +62,7 @@ Package.on_use(function(api) {
   api.imply('accounts-base', ['client', 'server']);
   api.export('AccountsEntry', ['client', 'server']);
   api.use('iron:router@0.9.4', ['client', 'server']);
-  api.use('anti:i18n@0.4.3', ['client']);
+  api.use('anti:i18n@0.4.3', ['client', 'server']);
   api.add_files(['shared/router.coffee'], ['client', 'server']);
 
 });
