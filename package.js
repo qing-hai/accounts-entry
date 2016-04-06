@@ -1,23 +1,26 @@
 Package.describe({
-    summary: "Make signin and signout their own pages with routes."
+    name:"qinghai:accounts-entry",
+    summary: "Make signin and signout their own pages with routes.",
+    version:"0.7.1_2",
+    git:"https://github.com/qing-hai/accounts-entry.git#noteon"
 });
 
 Package.on_use(function(api) {
-
+    
   // CLIENT
   api.use([
-    'deps',
-    'service-configuration',
-    'accounts-base',
-    'underscore',
-    'templating',
-    'handlebars',
-    'session',
-    'coffeescript',
-    'less']
+    'deps@1.0.5',
+    'service-configuration@1.0.2',
+    'accounts-base@1.1.2',
+    'underscore@1.0.1',
+    'templating@1.0.8',
+    'handlebars@1.0.1',
+    'session@1.0.3',
+    'coffeescript@1.0.4',
+    'less@1.0.10']
   , 'client');
 
-
+    
   api.add_files([
     'client/entry.coffee',
     'client/entry.less',
@@ -36,7 +39,6 @@ Package.on_use(function(api) {
     'client/views/error/error.coffee',
     'client/views/accountButtons/accountButtons.html',
     'client/views/accountButtons/accountButtons.coffee',
-    'client/views/accountButtons/_wrapLinks.html',
     'client/i18n/english.coffee',
     'client/i18n/german.coffee',
     'client/i18n/spanish.coffee'
@@ -44,34 +46,22 @@ Package.on_use(function(api) {
 
   // SERVER
   api.use([
-    'deps',
-    'service-configuration',
-    'accounts-password',
-    'accounts-base',
-    'underscore',
-    'coffeescript'
+    'deps@1.0.5',
+    'service-configuration@1.0.2',
+    'accounts-password@1.0.3',
+    'accounts-base@1.1.2',
+    'underscore@1.0.1',
+    'coffeescript@1.0.4'
   ], 'server');
+
 
   api.add_files(['server/entry.coffee'], 'server');
 
   // CLIENT and SERVER
   api.imply('accounts-base', ['client', 'server']);
   api.export('AccountsEntry', ['client', 'server']);
-  api.use('iron-router', ['client', 'server']);
-  api.use(['just-i18n', 'accounts-t9n'], ['client', 'server']);
+  api.use('iron:router@0.9.4', ['client', 'server']);
+  api.use('anti:i18n@0.4.3', ['client']);
   api.add_files(['shared/router.coffee'], ['client', 'server']);
 
 });
-
-Package.on_test(function (api) {
-  api.use(['tinytest',
-            'handlebars',
-            'test-helpers',
-            'templating',
-            'mongo-livedata',
-            'coffeescript',
-            'iron-router'])
-  api.use('accounts-entry')
-
-  api.add_files(['tests/route.coffee', 'tests/client.html', 'tests/client.coffee'], 'client')
-})
