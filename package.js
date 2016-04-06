@@ -17,7 +17,7 @@ Package.on_use(function(api) {
     'handlebars@1.0.1',
     'session@1.0.3',
     'coffeescript@1.0.4',
-    'less@1.0.10']
+    'less@2.5.6']
   , 'client');
 
     
