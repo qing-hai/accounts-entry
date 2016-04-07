@@ -25,3 +25,5 @@ Template.entryForgotPassword.events
           else
              alert(msg)          
     )
+
+

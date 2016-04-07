@@ -124,8 +124,8 @@ Template.entrySignUp.events
           password: password
           profile: AccountsEntry.settings.defaultProfile || {}
         if username
-          data.username = username
-        Accounts.createUser newUserData, (err, data) ->
+          newUserData.username = username
+        Meteor.call "createNewUserAndSendVerificationEmail", newUserData, (err, data) ->
           if err
             Session.set('entryError', err.reason)
             $('#signUp .btn').button('reset')
@@ -137,8 +137,7 @@ Template.entrySignUp.events
               Session.set('entryError', err.reason)
               return
 
-            msg='Your account has been created. An activation email has been sent to your email address '+ email + '  <br/> NOTE: if you do not see your activation email, look in your spam/junk mailbox.'
-
+             msg=_s.sprintf("Your account has been created. An activation email has been sent to your email address %s <br/> NOTE: if you do not see your activation email, look in your spam/junk mailbox. You can also try to <a class='verify_link' id='resendEmail' href='javascript:void(0)'>resend activation email</a>", email)  
             if app && app.client
                app.client.alert(msg,'success')
             else
@@ -157,7 +156,7 @@ Template.entrySignUp.events
     event.preventDefault()
     $('#signUp .btn').button('loading')
     
-    if app
-      app.client.loginAsDemo()
-    else
-      $('#signUp .btn').button('reset')
+    # if app
+    #   app.client.loginAsDemo()
+    # else
+    #   $('#signUp .btn').button('reset')
