@@ -1,28 +1,29 @@
 Package.describe({
     name:"qinghai:accounts-entry",
     summary: "Make signin and signout their own pages with routes.",
+    version:"0.7.1_9",
     git:"https://github.com/qing-hai/accounts-entry.git#loadbooster_v0.5.0"
 });
 
 Package.on_use(function(api) {
+  api.versionsFrom('METEOR@0.9.4');
     
   // CLIENT
   api.use([
-    'deps',
-    'service-configuration',
-    'accounts-base',
-    'underscore',
-    'templating',
-    'handlebars',
-    'session',
-    'coffeescript',
-    'less']
+    'deps@1.0.5',
+    'service-configuration@1.0.2',
+    'accounts-base@1.1.2',
+    'underscore@1.0.1',
+    'templating@1.0.8',
+    'handlebars@1.0.1',
+    'session@1.0.3',
+    'coffeescript@1.0.4']
   , 'client');
 
     
   api.add_files([
     'client/entry.coffee',
-    'client/entry.less',
+    'client/entry.css',
     'client/helpers.coffee',
     'client/views/signIn/signIn.html',
     'client/views/signIn/signIn.coffee',
@@ -37,6 +38,7 @@ Package.on_use(function(api) {
     'client/views/error/error.html',
     'client/views/error/error.coffee',
     'client/views/accountButtons/accountButtons.html',
+    //'client/views/accountButtons/_wrapLinks.html',
     'client/views/accountButtons/accountButtons.coffee',
     'client/i18n/english.coffee',
     'client/i18n/german.coffee',
@@ -45,12 +47,12 @@ Package.on_use(function(api) {
 
   // SERVER
   api.use([
-    'deps',
-    'service-configuration',
-    'accounts-password',
-    'accounts-base',
-    'underscore',
-    'coffeescript'
+    'deps@1.0.5',
+    'service-configuration@1.0.2',
+    'accounts-password@1.0.3',
+    'accounts-base@1.1.2',
+    'underscore@1.0.1',
+    'coffeescript@1.0.4'
   ], 'server');
 
 
@@ -59,8 +61,8 @@ Package.on_use(function(api) {
   // CLIENT and SERVER
   api.imply('accounts-base', ['client', 'server']);
   api.export('AccountsEntry', ['client', 'server']);
-  api.use('iron:router', ['client', 'server']);
-  api.use('anti:i18n', ['client']);
+  api.use('iron:router@0.9.4', ['client', 'server']);
+  api.use('anti:i18n@0.4.3', ['client', 'server']);
   api.add_files(['shared/router.coffee'], ['client', 'server']);
 
 });
