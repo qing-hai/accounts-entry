@@ -131,21 +131,17 @@ Template.entrySignUp.events
             $('#signUp .btn').button('reset')
             return
 
-          Meteor.call('sendVerificationEmail', data, (err) ->
-            if err
-              $('#signUp .btn').button('reset')
-              Session.set('entryError', err.reason)
-              return
+          Session.set('entryError', undefined)
+          msg=_s.sprintf("Your account has been created. An activation email has been sent to your email address %s <br/> NOTE: if you do not see your activation email, look in your spam/junk mailbox. You can also try to <a class='verify_link' id='resendEmail' href='javascript:void(0)'>resend activation email</a>", email)
+          
+          if app && app.client
+             app.client.alert(msg,'success')
+          else
+             alert(msg)
 
-             msg=_s.sprintf("Your account has been created. An activation email has been sent to your email address %s <br/> NOTE: if you do not see your activation email, look in your spam/junk mailbox. You can also try to <a class='verify_link' id='resendEmail' href='javascript:void(0)'>resend activation email</a>", email)  
-            if app && app.client
-               app.client.alert(msg,'success')
-            else
-               alert(msg)
-
-            $('#signUp')[0].reset()
-            $('#signUp .btn').button('reset')
-          )
+          $('#signUp')[0].reset()
+          $('#signUp .btn').button('reset')
+        
       else
         Session.set('entryError', i18n("error.signupCodeIncorrect"))
         $('#signUp .btn').button('reset')
